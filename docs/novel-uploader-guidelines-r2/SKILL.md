@@ -1,6 +1,24 @@
+---
+name: novel-uploader-guidelines-r2
+description: Guidelines for formatting novel content for R2 upload. Use when helping users prepare, format, or upload novel content (chapters, metadata, cover art) to Cloudflare R2 for web novel viewer applications.
+metadata:
+  author: jerow
+  version: "1.0"
+---
+
 # Novel Content Formatting Guide for R2 Upload
 
-This document provides the file structure and format specifications for preparing novel content to be uploaded to the Cloudflare R2 bucket (`NOVEL_VIEWER_STORAGE`) for the novel-web-viewer application.
+This skill provides the file structure and format specifications for preparing novel content to be uploaded to Cloudflare R2 buckets for web novel viewer applications.
+
+## When to Use This Skill
+
+Use this skill when:
+- User asks how to format novel content for upload
+- User needs to prepare chapters, metadata, or cover art
+- User wants to upload content to R2
+- User asks about the structure of `meta.json`
+- User needs validation rules for novel content
+- User asks about chapter numbering or file formats
 
 ## R2 Directory Structure
 
@@ -190,13 +208,13 @@ Before uploading a novel to R2, verify:
 
 ```bash
 # Upload meta.json
-wrangler r2 object put NOVEL_VIEWER_STORAGE/novels/my-novel/meta.json --file=./meta.json
+wrangler r2 object put YOUR_BUCKET_NAME/novels/my-novel/meta.json --file=./meta.json
 
 # Upload a chapter
-wrangler r2 object put NOVEL_VIEWER_STORAGE/novels/my-novel/chapters/00001.md --file=./chapters/00001.md
+wrangler r2 object put YOUR_BUCKET_NAME/novels/my-novel/chapters/00001.md --file=./chapters/00001.md
 
 # Upload cover art
-wrangler r2 object put NOVEL_VIEWER_STORAGE/novels/my-novel/assets/cover_art.jpg --file=./cover_art.jpg
+wrangler r2 object put YOUR_BUCKET_NAME/novels/my-novel/assets/cover_art.jpg --file=./cover_art.jpg
 ```
 
 ### Bulk Upload Script Example
@@ -204,7 +222,7 @@ wrangler r2 object put NOVEL_VIEWER_STORAGE/novels/my-novel/assets/cover_art.jpg
 ```bash
 #!/bin/bash
 NOVEL_SLUG="my-novel"
-BUCKET="NOVEL_VIEWER_STORAGE"
+BUCKET="YOUR_BUCKET_NAME"  # Replace with your R2 bucket name
 
 # Upload meta
 wrangler r2 object put $BUCKET/novels/$NOVEL_SLUG/meta.json --file=./meta.json
@@ -252,8 +270,6 @@ ls -1 chapters/ | sort
 6. ❌ HTML tags in Markdown → ✅ Use pure Markdown syntax
 7. ❌ Inconsistent date formats → ✅ Always use `YYYY-MM-DD`
 
----
-
 ## Quick Reference Card
 
 ```
@@ -274,7 +290,17 @@ Status values:
   "ongoing" | "completed" | "hiatus"
 ```
 
----
+## AI Agent Usage Instructions
+
+When helping users format content:
+
+1. **Validate the structure** — Check that all required paths and files are present
+2. **Generate meta.json** — Ask user for novel details and generate a valid `meta.json`
+3. **Format chapters** — Help convert raw text to properly formatted markdown with frontmatter
+4. **Create upload script** — Generate a bulk upload script for the user's specific novel
+5. **Validate before upload** — Run through the checklist above
+
+**Output Format**: Always provide ready-to-use files and scripts. Don't just explain — generate the actual content the user needs.
 
 **Need Help?**
 - Check existing novels in R2 for reference examples
