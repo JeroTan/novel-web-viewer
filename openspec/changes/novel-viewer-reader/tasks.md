@@ -57,3 +57,8 @@
 
 - [x] 10.1 Update `src/pages/index.astro` — replace all technical copy ("Cloudflare R2", etc.) with reader-friendly language in both the visible body text and the SEO `description` meta prop
 - [x] 10.2 Audit all other user-visible strings across pages and components — remove any remaining references to infrastructure terms ("R2", "Cloudflare", "Workers", "bucket", "API") from text rendered to the user
+
+## 11. Reader Prose Formatting
+
+- [x] 11.1 Create `src/features/novel-viewer/components/ReaderFormatStyle.astro` — wraps `<slot />` in a `<div>` with a unique class; uses `<style is:global>` scoped to that class to apply explicit prose styles (`p`, `h1`–`h6`, `blockquote`, `hr`, `em`, `strong`, `ul`, `ol`, `li`, `a`, `code`, `pre`) with sufficient specificity to override Tailwind v4 Preflight resets
+- [x] 11.2 Update `ChapterReader.astro` — replace the inline `.prose-chapter` `<style>` block and raw `<div set:html>` with `<ReaderFormatStyle>` wrapping the `set:html` div, remove the old scoped style block

@@ -47,6 +47,29 @@ The system SHALL provide a `ChapterNav.astro` feature-specific component (in `sr
 
 ---
 
+### Requirement: ReaderFormatStyle wrapper component
+The system SHALL provide a `ReaderFormatStyle.astro` component (in `src/features/novel-viewer/components/`) that accepts a default `<slot />` and wraps its children in a container with fully explicit prose CSS applied via `<style is:global>` scoped to a unique class name. All styles SHALL use `!important` or sufficiently high specificity to override Tailwind v4 Preflight resets on injected HTML elements (`p`, `h1`–`h6`, `blockquote`, `hr`, `em`, `strong`, `ul`, `ol`, `li`, `a`, `code`, `pre`).
+
+**Rationale**: Astro scoped styles do not penetrate `set:html` injected content. Tailwind v4 Preflight resets browser defaults (margins, font sizes, font weights) on all elements. The only reliable solution is `<style is:global>` scoped to a unique wrapper class, ensuring injected HTML renders with readable prose formatting regardless of Tailwind resets.
+
+#### Scenario: paragraph spacing
+- **WHEN** a chapter body contains multiple paragraphs
+- **THEN** each `<p>` has visible bottom margin (`1.25em` minimum) so paragraphs are clearly separated
+
+#### Scenario: heading hierarchy
+- **WHEN** the chapter body contains `<h2>` or `<h3>` elements
+- **THEN** they render larger and bolder than body text with top margin for visual separation
+
+#### Scenario: blockquote style
+- **WHEN** the chapter body contains a `<blockquote>`
+- **THEN** it renders with a left border and muted italic text
+
+#### Scenario: Tailwind reset does not win
+- **WHEN** Tailwind Preflight is active
+- **THEN** `ReaderFormatStyle` styles still apply correctly to all child elements
+
+---
+
 ### Requirement: Chapter reader typography and dark mode
 The chapter content container SHALL use readable prose styles: minimum `1rem` font size, `1.75` line-height, comfortable paragraph spacing. In dark mode (`.dark` class on `html`), background SHALL switch to a dark surface and text to a near-white color.
 
