@@ -12,7 +12,7 @@
     "astro": "astro",
     "wrangler-types": "wrangler types",
     "wrangler-dev": "astro build && wrangler dev -- --ip 0.0.0.0 --port 8787",
-    "deploy-development": "npx wrangler@latest deploy --env=\"development\" && npx wrangler d1 execute novel-web-viewer-db-development --file=db/schema.sql",
+    "deploy-development": "npx wrangler@latest deploy --env=\"development\"",
     "deploy-staging": "npx wrangler@latest deploy --env=\"staging\"",
     "deploy-production": "npx wrangler@latest deploy --env=\"production\"",
     "check": "astro check",
