@@ -1,0 +1,24 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import NovelGrid from "@/features/novel-viewer/NovelGrid.astro";
+import { getNovelList } from "@/lib/r2";
+
+const novels = await getNovelList();
+---
+<Layout
+  title="Novel Library — Novel Web Viewer"
+  description="Browse our collection of web novels. Discover stories across fantasy, sci-fi, and more."
+>
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <h1 style="color: var(--color-text);" class="text-3xl font-bold">
+        Novel Library
+      </h1>
+      <p style="color: var(--color-text-muted);" class="mt-1 text-sm">
+        {novels.length} {novels.length === 1 ? "novel" : "novels"} available
+      </p>
+    </div>
+
+    <NovelGrid novels={novels} />
+  </main>
+</Layout>

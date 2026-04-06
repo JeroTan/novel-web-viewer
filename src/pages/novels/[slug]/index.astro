@@ -1,0 +1,43 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import NovelDetailHeader from "@/features/novel-viewer/NovelDetailHeader.astro";
+import ChapterList from "@/features/novel-viewer/ChapterList.astro";
+import { getNovel } from "@/lib/r2";
+
+const { slug } = Astro.params;
+
+if (!slug) return Astro.redirect("/404");
+
+const novel = await getNovel(slug);
+if (!novel) return new Response(null, { status: 404 });
+
+const ogImage = novel.coverArtKey ? `/api/r2/${novel.coverArtKey}` : undefined;
+---
+<Layout
+  title={`${novel.title} — Novel Web Viewer`}
+  description={novel.description}
+  ogTitle={novel.title}
+  ogDescription={novel.description}
+  ogImage={ogImage}
+>
+  <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mb-4">
+      <a
+        href="/novels"
+        style="color: var(--color-primary);"
+        class="text-sm transition-opacity hover:opacity-70"
+      >
+        ← Back to Library
+      </a>
+    </div>
+
+    <NovelDetailHeader novel={novel} />
+
+    <div
+      style="border-top: 1px solid var(--color-border);"
+      class="mt-10 pt-8"
+    >
+      <ChapterList chapters={novel.chapters} slug={slug} />
+    </div>
+  </main>
+</Layout>

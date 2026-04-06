@@ -1,0 +1,53 @@
+---
+interface Props {
+  slug: string;
+  prev: string | null;
+  next: string | null;
+}
+
+const { slug, prev, next } = Astro.props;
+---
+<nav
+  class="flex items-center justify-between gap-4 py-4"
+  aria-label="Chapter navigation"
+>
+  {prev ? (
+    <a
+      href={`/novels/${slug}/chapters/${prev}`}
+      style="background-color: var(--color-surface-alt); color: var(--color-text); border: 1px solid var(--color-border);"
+      class="flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors hover:opacity-80"
+    >
+      <span aria-hidden="true">←</span>
+      Previous Chapter
+    </a>
+  ) : (
+    <span
+      style="color: var(--color-text-muted); border: 1px solid var(--color-border);"
+      class="flex cursor-not-allowed items-center gap-2 rounded-md px-4 py-2 text-sm font-medium opacity-40"
+      aria-disabled="true"
+    >
+      <span aria-hidden="true">←</span>
+      Previous Chapter
+    </span>
+  )}
+
+  {next ? (
+    <a
+      href={`/novels/${slug}/chapters/${next}`}
+      style="background-color: var(--color-primary); color: var(--color-text-on-primary);"
+      class="flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors hover:opacity-90"
+    >
+      Next Chapter
+      <span aria-hidden="true">→</span>
+    </a>
+  ) : (
+    <span
+      style="color: var(--color-text-muted); border: 1px solid var(--color-border);"
+      class="flex cursor-not-allowed items-center gap-2 rounded-md px-4 py-2 text-sm font-medium opacity-40"
+      aria-disabled="true"
+    >
+      Next Chapter
+      <span aria-hidden="true">→</span>
+    </span>
+  )}
+</nav>

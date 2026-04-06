@@ -1,0 +1,30 @@
+---
+interface Props {
+  status: "ongoing" | "completed" | "hiatus";
+}
+
+const { status } = Astro.props;
+
+const config = {
+  ongoing: {
+    label: "Ongoing",
+    style: "background-color: var(--color-success); color: var(--color-text-on-primary);",
+  },
+  completed: {
+    label: "Completed",
+    style: "background-color: var(--color-primary); color: var(--color-text-on-primary);",
+  },
+  hiatus: {
+    label: "Hiatus",
+    style: "background-color: var(--color-warning); color: var(--color-text-on-primary);",
+  },
+} as const;
+
+const { label, style } = config[status];
+---
+<span
+  style={style}
+  class="inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide"
+>
+  {label}
+</span>

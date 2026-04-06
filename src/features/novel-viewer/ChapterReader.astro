@@ -1,0 +1,70 @@
+---
+import type { ChapterData } from "@/lib/r2";
+import ChapterNav from "@/features/novel-viewer/components/ChapterNav.astro";
+
+interface Props {
+  chapter: ChapterData;
+  slug: string;
+}
+
+const { chapter, slug } = Astro.props;
+
+const displayNumber = parseInt(chapter.chapterNumber, 10);
+const heading = chapter.title ?? `Chapter ${displayNumber}`;
+---
+<article class="mx-auto max-w-3xl px-4 py-8">
+  <h1 style="color: var(--color-text);" class="mb-6 text-2xl font-bold md:text-3xl">
+    {heading}
+  </h1>
+
+  <ChapterNav slug={slug} prev={chapter.prev} next={chapter.next} />
+
+  <div
+    class="prose-chapter mt-6 mb-6"
+    style="color: var(--color-text);"
+    set:html={chapter.html}
+  />
+
+  <ChapterNav slug={slug} prev={chapter.prev} next={chapter.next} />
+</article>
+
+<style>
+  .prose-chapter {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .prose-chapter :global(p) {
+    margin-bottom: 1.25em;
+  }
+  .prose-chapter :global(h2),
+  .prose-chapter :global(h3) {
+    font-weight: 700;
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+    color: var(--color-text);
+  }
+  .prose-chapter :global(h2) {
+    font-size: 1.25rem;
+  }
+  .prose-chapter :global(h3) {
+    font-size: 1.125rem;
+  }
+  .prose-chapter :global(blockquote) {
+    border-left: 3px solid var(--color-border);
+    padding-left: 1em;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin: 1.5em 0;
+  }
+  .prose-chapter :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 2em 0;
+  }
+  .prose-chapter :global(em) {
+    font-style: italic;
+  }
+  .prose-chapter :global(strong) {
+    font-weight: 700;
+  }
+</style>

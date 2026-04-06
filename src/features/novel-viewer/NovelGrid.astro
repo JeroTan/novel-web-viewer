@@ -1,0 +1,23 @@
+---
+import type { NovelSummary } from "@/lib/r2";
+import NovelCard from "@/components/NovelCard.astro";
+import EmptyState from "@/components/EmptyState.astro";
+
+interface Props {
+  novels: NovelSummary[];
+}
+
+const { novels } = Astro.props;
+---
+{novels.length === 0 ? (
+  <EmptyState
+    heading="No Novels Yet"
+    description="The shelf is empty. Check back soon — new stories are on their way."
+  />
+) : (
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    {novels.map((novel) => (
+      <NovelCard novel={novel} href={`/novels/${novel.slug}`} />
+    ))}
+  </div>
+)}

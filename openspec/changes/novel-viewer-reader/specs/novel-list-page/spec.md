@@ -58,3 +58,16 @@ The novel list page SHALL include a `<title>` tag and `<meta name="description">
 #### Scenario: page head
 - **WHEN** the `/novels` page is rendered
 - **THEN** the `<title>` contains the site name and the meta description is set
+
+---
+
+### Requirement: User-facing copy must be non-technical
+All user-visible text (headings, descriptions, labels, SEO meta) SHALL NOT reference infrastructure or technical implementation details such as "Cloudflare", "R2", "Workers", "bucket", or "API". The app SHALL present as a normal novel reader to end users.
+
+#### Scenario: home page copy
+- **WHEN** a user visits `/`
+- **THEN** the page description and body text describe the app as a novel reading experience, with no mention of underlying technology
+
+#### Scenario: SEO meta descriptions
+- **WHEN** any page renders its `<meta name="description">` tag
+- **THEN** the description contains reader-friendly language only

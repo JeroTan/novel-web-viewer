@@ -1,0 +1,13 @@
+---
+interface Props {
+  genre: string;
+}
+
+const { genre } = Astro.props;
+---
+<span
+  style="background-color: color-mix(in oklch, var(--color-secondary) 15%, var(--color-surface)); color: var(--color-secondary); border: 1px solid color-mix(in oklch, var(--color-secondary) 30%, transparent);"
+  class="inline-block rounded-full px-2.5 py-0.5 text-xs font-medium capitalize"
+>
+  {genre}
+</span>

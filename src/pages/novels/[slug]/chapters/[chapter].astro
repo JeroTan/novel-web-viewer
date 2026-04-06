@@ -1,0 +1,44 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ChapterReader from "@/features/novel-viewer/ChapterReader.astro";
+import { getNovelChapterData, getNovel } from "@/lib/r2";
+
+const { slug, chapter } = Astro.params;
+
+if (!slug || !chapter) return new Response(null, { status: 404 });
+
+const [chapterData, novel] = await Promise.all([
+  getNovelChapterData(slug, chapter),
+  getNovel(slug),
+]);
+
+if (!chapterData || !novel) return new Response(null, { status: 404 });
+
+const displayNumber = parseInt(chapter, 10);
+const chapterTitle = chapterData.title ?? `Chapter ${displayNumber}`;
+const pageTitle = `${chapterTitle} — ${novel.title}`;
+---
+<Layout title={pageTitle} description={`Read ${chapterTitle} of ${novel.title} by ${novel.author}.`}>
+  <div style="background-color: var(--color-surface);" class="min-h-screen">
+    <!-- Top nav bar -->
+    <nav
+      style="background-color: var(--color-surface-alt); border-bottom: 1px solid var(--color-border);"
+      class="sticky top-0 z-10 px-4 py-3"
+    >
+      <div class="mx-auto flex max-w-3xl items-center justify-between">
+        <a
+          href={`/novels/${slug}`}
+          style="color: var(--color-primary);"
+          class="text-sm transition-opacity hover:opacity-70"
+        >
+          ← {novel.title}
+        </a>
+        <span style="color: var(--color-text-muted);" class="text-xs">
+          {chapterTitle}
+        </span>
+      </div>
+    </nav>
+
+    <ChapterReader chapter={chapterData} slug={slug} />
+  </div>
+</Layout>

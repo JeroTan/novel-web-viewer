@@ -1,0 +1,55 @@
+---
+interface ChapterItem {
+  key: string;
+  number: string;
+  title?: string;
+}
+
+interface Props {
+  chapters: ChapterItem[];
+  slug: string;
+}
+
+const { chapters, slug } = Astro.props;
+---
+<section>
+  <h2 style="color: var(--color-text);" class="mb-3 text-lg font-semibold">
+    Chapters ({chapters.length})
+  </h2>
+
+  {chapters.length === 0 ? (
+    <p style="color: var(--color-text-muted);" class="py-6 text-center text-sm">
+      No chapters available yet.
+    </p>
+  ) : (
+    <ol
+      style="border: 1px solid var(--color-border); border-radius: 0.5rem; overflow: hidden;"
+      class="divide-y"
+    >
+      {chapters.map((chapter, index) => {
+        const displayNumber = parseInt(chapter.number, 10);
+        const label = chapter.title ?? `Chapter ${displayNumber}`;
+        const isEven = index % 2 === 0;
+        return (
+          <li style={`background-color: ${isEven ? "var(--color-surface)" : "var(--color-surface-alt)"};`}>
+            <a
+              href={`/novels/${slug}/chapters/${chapter.number}`}
+              class="flex items-center gap-4 px-4 py-3 text-sm transition-opacity hover:opacity-70"
+            >
+              <span
+                style="color: var(--color-text-muted);"
+                class="w-10 flex-shrink-0 text-right font-mono text-xs"
+              >
+                {displayNumber}
+              </span>
+              <span style="color: var(--color-text);" class="flex-1 font-medium">
+                {label}
+              </span>
+              <span style="color: var(--color-text-muted);" aria-hidden="true">→</span>
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+  )}
+</section>
