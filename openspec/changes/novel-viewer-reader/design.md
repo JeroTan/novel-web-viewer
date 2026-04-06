@@ -122,6 +122,28 @@ src/
 
 **Alternative considered**: Separate `tailwind.config.ts` — not compatible with Tailwind v4's CSS-first approach.
 
+### 7. DOM Element Queries in `<script>` Blocks — `as HTMLElement` Assertion
+
+**Decision**: When querying a DOM element that is **guaranteed to exist** because it is declared in the same component's template (e.g., `getElementById("cover-lightbox")`), use a type assertion (`as HTMLElement` / `as HTMLInputElement`, etc.) instead of a `!` non-null assertion or a null guard + early return.
+
+```ts
+// ✅ Correct — element is in this component's template; assertion is safe and self-documenting
+const overlay = document.getElementById("cover-lightbox") as HTMLElement;
+
+// ❌ Avoid — ! scatter-guns away the type error without communicating intent
+const overlay = document.getElementById("cover-lightbox")!;
+
+// ❌ Avoid for guaranteed elements — hides the baked-in assumption as a runtime branch
+const overlay = document.getElementById("cover-lightbox");
+if (!overlay) return;
+```
+
+**Rationale**: `as HTMLElement` communicates developer intent clearly — "I know this element exists, and I know its type" — making the assumption explicit and reviewable. Non-null `!` accomplishes the same suppression but without the type narrowing. Null guards are appropriate when the element may genuinely be absent (e.g., an optional feature component), not when it is structurally guaranteed.
+
+**Rule**: Use `as HTMLElement` (or a more specific subtype) for elements owned by the current component's template. Use a null guard only for elements that may be conditionally absent.
+
+---
+
 ## Risks / Trade-offs
 
 - **R2 cold latency** → `getNovelList()` calls `list()` + N `get()` calls for meta.json (one per novel). This may be slow with many novels. Mitigation: initially acceptable; can add pagination or a manifest file later.

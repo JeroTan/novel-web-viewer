@@ -14,7 +14,7 @@ The system SHALL render a `/novels/[slug]` page that fetches the novel via `getN
 ---
 
 ### Requirement: NovelDetailHeader feature component
-The system SHALL provide a `NovelDetailHeader.astro` component that displays: cover art image (or placeholder), title, author, description, `StatusBadge`, language, published/updated dates, and a row of `GenreTag` components for each genre. Layout SHALL be responsive (stacked on mobile, side-by-side on desktop).
+The system SHALL provide a `NovelDetailHeader.astro` component that displays: cover art image (or placeholder), title, author, description, `StatusBadge`, language, published/updated dates, and a row of `GenreTag` components for each genre. Layout SHALL be responsive (stacked on mobile, side-by-side on desktop). The cover art image SHALL be clickable and open a `CoverArtLightbox` overlay.
 
 #### Scenario: full metadata available
 - **WHEN** all meta fields are populated
@@ -23,6 +23,41 @@ The system SHALL provide a `NovelDetailHeader.astro` component that displays: co
 #### Scenario: optional fields absent
 - **WHEN** description or tags are empty arrays
 - **THEN** those sections are hidden gracefully with no visible empty gaps
+
+#### Scenario: cover art is clickable
+- **WHEN** the user clicks the cover art image in `NovelDetailHeader`
+- **THEN** the `CoverArtLightbox` overlay opens showing a zoomed view of the cover
+
+---
+
+### Requirement: CoverArtLightbox component
+The system SHALL provide a `CoverArtLightbox.astro` component (in `src/features/novel-viewer/components/`) that renders a full-screen modal overlay with the cover art image. The lightbox SHALL support:
+- **Zoom in / zoom out** via `+`/`-` buttons and mouse scroll wheel
+- **Pan** by click-and-drag when zoomed in
+- **Close** via a close button, pressing `Escape`, or clicking the backdrop
+- Zoom SHALL clamp between 1× (fit) and 5×
+- The component accepts `src: string` and `alt: string` props
+- The overlay is implemented purely with inline `<script>` and CSS (no external dependencies)
+
+#### Scenario: open lightbox
+- **WHEN** the cover art is clicked
+- **THEN** a full-screen dark overlay appears with the cover image centered and fit to the viewport
+
+#### Scenario: zoom in
+- **WHEN** user clicks `+` or scrolls up on the image
+- **THEN** the image scales up (max 5×), centered on the pointer position
+
+#### Scenario: zoom out
+- **WHEN** user clicks `-` or scrolls down
+- **THEN** the image scales down, clamping at 1× (no smaller than fit)
+
+#### Scenario: pan
+- **WHEN** the image is zoomed in and user click-drags
+- **THEN** the image pans following the pointer
+
+#### Scenario: close
+- **WHEN** user presses `Escape`, clicks the `✕` button, or clicks the backdrop outside the image
+- **THEN** the overlay closes and focus returns to the page
 
 ---
 

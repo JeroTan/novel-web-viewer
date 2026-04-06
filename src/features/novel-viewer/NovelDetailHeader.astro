@@ -2,6 +2,7 @@
 import type { Novel } from "@/lib/r2";
 import StatusBadge from "@/components/StatusBadge.astro";
 import GenreTag from "@/components/GenreTag.astro";
+import CoverArtLightbox from "./components/CoverArtLightbox.astro";
 
 interface Props {
   novel: Novel;
@@ -21,12 +22,19 @@ function formatDate(dateStr: string): string {
   <!-- Cover Art -->
   <div class="flex-shrink-0">
     {novel.coverArtKey ? (
-      <img
-        src={`/api/r2/${novel.coverArtKey}`}
-        alt={`Cover art for ${novel.title}`}
-        style="border: 1px solid var(--color-border);"
-        class="h-64 w-44 rounded-lg object-cover shadow-md md:h-80 md:w-56"
-      />
+      <button
+        data-open-lightbox="cover-lightbox"
+        type="button"
+        aria-label={`View full cover art for ${novel.title}`}
+        class="block cursor-zoom-in overflow-hidden rounded-lg p-0 transition-opacity hover:opacity-90 focus-visible:outline-2"
+        style="border: 1px solid var(--color-border); background: transparent;"
+      >
+        <img
+          src={`/api/r2/${novel.coverArtKey}`}
+          alt={`Cover art for ${novel.title}`}
+          class="h-64 w-44 object-cover shadow-md md:h-80 md:w-56"
+        />
+      </button>
     ) : (
       <div
         class="flex h-64 w-44 items-center justify-center rounded-lg text-4xl font-bold shadow-md md:h-80 md:w-56"
@@ -79,3 +87,10 @@ function formatDate(dateStr: string): string {
     </dl>
   </div>
 </header>
+
+{novel.coverArtKey && (
+  <CoverArtLightbox
+    src={`/api/r2/${novel.coverArtKey}`}
+    alt={`Cover art for ${novel.title}`}
+  />
+)}

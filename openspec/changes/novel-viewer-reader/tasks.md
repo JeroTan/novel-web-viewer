@@ -62,3 +62,8 @@
 
 - [x] 11.1 Create `src/features/novel-viewer/components/ReaderFormatStyle.astro` — wraps `<slot />` in a `<div>` with a unique class; uses `<style is:global>` scoped to that class to apply explicit prose styles (`p`, `h1`–`h6`, `blockquote`, `hr`, `em`, `strong`, `ul`, `ol`, `li`, `a`, `code`, `pre`) with sufficient specificity to override Tailwind v4 Preflight resets
 - [x] 11.2 Update `ChapterReader.astro` — replace the inline `.prose-chapter` `<style>` block and raw `<div set:html>` with `<ReaderFormatStyle>` wrapping the `set:html` div, remove the old scoped style block
+
+## 12. Cover Art Lightbox
+
+- [x] 12.1 Create `src/features/novel-viewer/components/CoverArtLightbox.astro` — accepts `src: string` and `alt: string` props; renders a hidden full-screen overlay (`id="cover-lightbox"`) with a centered `<img>`, close button (`✕`), zoom-in (`+`) and zoom-out (`-`) buttons; implemented with inline `<script>` for open/close, scroll-to-zoom (clamped 1×–5×), click-drag pan, and `Escape` key to close; backdrop click also closes
+- [x] 12.2 Update `NovelDetailHeader.astro` — import and render `CoverArtLightbox` (only when `coverArtKey` is non-null); wrap the cover art `<img>` in a `<button>` that triggers the lightbox open on click; add a visual hint (cursor pointer, subtle hover effect) indicating the image is interactive
