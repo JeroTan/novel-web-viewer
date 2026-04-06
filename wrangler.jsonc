@@ -1,0 +1,88 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": "src/cloudflare/worker.ts",
+	"name": "novel-web-viewer",
+	"compatibility_date": "2025-09-15",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"preview_urls": false,
+	"workers_dev": true,
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1
+	},
+	"ai": {
+		"binding": "AI",
+		"remote": true
+	},
+	"r2_buckets": [
+		{
+			"binding": "NOVEL_VIEWER_STORAGE",
+			"bucket_name": "web-novel-viewer-storage",
+			"remote": true
+		}
+	],
+	"triggers": {
+		"crons": [
+			"0 0 * * *"
+		]
+	},
+	"env": {
+		"development": {
+			"name": "novel-web-viewer-development",
+			"vars": {
+				"SECRET_ENVIRONMENT_STATUS": "development"
+			},
+			"r2_buckets": [
+				{
+					"binding": "NOVEL_VIEWER_STORAGE",
+					"bucket_name": "web-novel-viewer-storage-development",
+					"remote": true
+				}
+			],
+			"ai": {
+				"binding": "AI"
+			}
+		},
+		"staging": {
+			"name": "novel-web-viewer-staging",
+			"vars": {
+				"SECRET_ENVIRONMENT_STATUS": "staging"
+			},
+			"r2_buckets": [
+				{
+					"binding": "NOVEL_VIEWER_STORAGE",
+					"bucket_name": "web-novel-viewer-storage-staging",
+					"remote": true
+				}
+			],
+			"ai": {
+				"binding": "AI",
+				"remote": true
+			}
+		},
+		"production": {
+			"name": "novel-web-viewer",
+			"vars": {
+				"SECRET_ENVIRONMENT_STATUS": "live"
+			},
+			"r2_buckets": [
+				{
+					"binding": "NOVEL_VIEWER_STORAGE",
+					"bucket_name": "web-novel-viewer-storage",
+					"remote": true
+				}
+			],
+			"ai": {
+				"binding": "AI",
+				"remote": true
+			}
+		}
+	}
+}

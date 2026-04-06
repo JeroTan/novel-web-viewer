@@ -1,0 +1,31 @@
+---
+import "@/styles/globals.css";
+import type { HTMLAttributes } from "astro/types";
+import ThemeScript from "@/features/theme/ThemeScript.astro";
+
+interface Props {
+    title: string;
+    html: HTMLAttributes<"html">;
+}
+
+const { title, html } = Astro.props;
+---
+<!doctype html>
+<html lang="en" {...html}>
+    <head>
+        <meta name="application-name" content="Novel Web Viewer" />
+        <title>{title}</title>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="sitemap" href="/sitemap-index.xml" />
+        <meta name="robots" content="index, follow" />
+        <meta name="theme-color" content="#ffffff" />
+        <slot name="head-last" />
+    </head>
+    <body>
+        <slot />
+        <ThemeScript />
+    </body>
+</html>
