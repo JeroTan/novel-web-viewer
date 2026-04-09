@@ -2,6 +2,7 @@
 import type { ChapterData } from "@/lib/r2";
 import ChapterNav from "@/features/novel-viewer/components/ChapterNav.astro";
 import ReaderFormatStyle from "@/features/novel-viewer/components/ReaderFormatStyle.astro";
+import AITransparencyDisclaimer from "@/components/AITransparencyDisclaimer.astro";
 
 interface Props {
   chapter: ChapterData;
@@ -25,6 +26,8 @@ const heading = chapter.title ?? `Chapter ${displayNumber}`;
       <div set:html={chapter.html} />
     </ReaderFormatStyle>
   </div>
+
+  <AITransparencyDisclaimer />
 
   <ChapterNav slug={slug} prev={chapter.prev} next={chapter.next} />
 </article>

@@ -1,23 +1,30 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import AITransparencyDisclaimer from "@/components/AITransparencyDisclaimer.astro";
 ---
 <Layout title="Novel Web Viewer" description="Discover and read novels online. Browse chapters, follow your favorite stories, and enjoy reading anywhere.">
   <main
     style="background-color: var(--color-surface);"
     class="flex min-h-screen flex-col items-center justify-center px-4 text-center"
   >
-    <h1 style="color: var(--color-text);" class="mb-4 text-4xl font-bold">
-      Novel Web Viewer
-    </h1>
-    <p style="color: var(--color-text-muted);" class="mb-8 max-w-md text-base">
-      Discover and read novels online. Browse chapters and enjoy your favorite stories anytime, anywhere.
-    </p>
-    <a
-      href="/novels"
-      style="background-color: var(--color-primary); color: var(--color-text-on-primary);"
-      class="rounded-lg px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90"
-    >
-      Browse Library
-    </a>
+    <div class="flex-1 flex flex-col justify-center items-center">
+      <h1 style="color: var(--color-text);" class="mb-4 text-4xl font-bold">
+        Novel Web Viewer
+      </h1>
+      <p style="color: var(--color-text-muted);" class="mb-8 max-w-md text-base">
+        Discover and read novels online. Browse chapters and enjoy your favorite stories anytime, anywhere.
+      </p>
+      <a
+        href="/novels"
+        style="background-color: var(--color-primary); color: var(--color-text-on-primary);"
+        class="rounded-lg px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90"
+      >
+        Browse Library
+      </a>
+    </div>
+    
+    <div class="w-full max-w-md mt-auto pb-8">
+      <AITransparencyDisclaimer />
+    </div>
   </main>
 </Layout>

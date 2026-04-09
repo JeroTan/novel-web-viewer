@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import NovelGrid from "@/features/novel-viewer/NovelGrid.astro";
+import AITransparencyDisclaimer from "@/components/AITransparencyDisclaimer.astro";
 import { getNovelList } from "@/lib/r2";
 
 const novels = await getNovelList();
@@ -20,5 +21,9 @@ const novels = await getNovelList();
     </div>
 
     <NovelGrid novels={novels} />
+
+    <div class="mt-8">
+      <AITransparencyDisclaimer />
+    </div>
   </main>
 </Layout>
