@@ -2,6 +2,7 @@
 import type { Novel } from "@/lib/r2";
 import StatusBadge from "@/components/StatusBadge.astro";
 import GenreTag from "@/components/GenreTag.astro";
+import MetadataPill from "@/components/MetadataPill.astro";
 import CoverArtLightbox from "./components/CoverArtLightbox.astro";
 
 interface Props {
@@ -65,9 +66,20 @@ function formatDate(dateStr: string): string {
       </p>
     )}
 
-    {novel.genre.length > 0 && (
+    {(novel.genre.length > 0 || novel.workType.length > 0) && (
       <div class="flex flex-wrap gap-2">
         {novel.genre.map((g) => <GenreTag genre={g} />)}
+        {novel.workType.map((type) => (
+          <MetadataPill label={type} tone="workType" />
+        ))}
+      </div>
+    )}
+
+    {novel.tags.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {novel.tags.map((tag) => (
+          <MetadataPill label={tag} tone="tag" />
+        ))}
       </div>
     )}
 

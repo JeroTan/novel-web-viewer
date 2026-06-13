@@ -11,9 +11,17 @@ export interface NovelMeta {
   status: "ongoing" | "completed" | "hiatus";
   genre: string[];
   tags: string[];
+  workType: string[];
   language: string;
   publishedAt: string;
   updatedAt: string;
+}
+
+interface RawNovelMeta extends Omit<NovelMeta, "genre" | "tags" | "workType"> {
+  genre?: unknown;
+  tags?: unknown;
+  workType?: unknown;
+  "work-type"?: unknown;
 }
 
 export interface NovelSummary extends NovelMeta {
@@ -43,6 +51,24 @@ function parseFrontmatter(raw: string): { title: string | null; body: string } {
   const titleMatch = frontmatter.match(/^title:\s*(.+)$/m);
   const title = titleMatch ? titleMatch[1]!.trim().replace(/^["']|["']$/g, "") : null;
   return { title, body };
+}
+
+function stringArrayOrEmpty(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === "string" && item.length > 0);
+}
+
+function normalizeNovelMeta(raw: RawNovelMeta): NovelMeta {
+  const { genre, tags, workType, "work-type": hyphenWorkType, ...meta } = raw;
+  const camelWorkType = stringArrayOrEmpty(workType);
+  const dashedWorkType = stringArrayOrEmpty(hyphenWorkType);
+
+  return {
+    ...meta,
+    genre: stringArrayOrEmpty(genre),
+    tags: stringArrayOrEmpty(tags),
+    workType: camelWorkType.length > 0 ? camelWorkType : dashedWorkType,
+  };
 }
 
 function extensionToContentType(key: string): string {
@@ -91,7 +117,7 @@ export async function getNovelList(): Promise<NovelSummary[]> {
       if (!obj) return;
       try {
         const text = await obj.text();
-        const meta = JSON.parse(text) as NovelMeta;
+        const meta = normalizeNovelMeta(JSON.parse(text) as RawNovelMeta);
         const coverArtKey = await getCoverArt(slug);
         results.push({ slug, coverArtKey, ...meta });
       } catch {
@@ -115,7 +141,7 @@ export async function getNovel(slug: string): Promise<Novel | null> {
 
   let meta: NovelMeta;
   try {
-    meta = JSON.parse(await metaObj.text()) as NovelMeta;
+    meta = normalizeNovelMeta(JSON.parse(await metaObj.text()) as RawNovelMeta);
   } catch {
     return null;
   }

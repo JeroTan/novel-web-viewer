@@ -1,5 +1,6 @@
 ---
 import type { NovelSummary } from "@/lib/r2";
+import MetadataPill from "@/components/MetadataPill.astro";
 import StatusBadge from "@/components/StatusBadge.astro";
 
 interface Props {
@@ -14,6 +15,9 @@ const initials = novel.title
   .slice(0, 2)
   .map((w) => w[0]?.toUpperCase() ?? "")
   .join("");
+
+const hasGenres = novel.genre.length > 0;
+const hasWorkTypes = novel.workType.length > 0;
 ---
 <a
   href={href}
@@ -54,6 +58,18 @@ const initials = novel.title
     <p style="color: var(--color-text-muted);" class="text-xs">
       {novel.author}
     </p>
+
+    {(hasGenres || hasWorkTypes) && (
+      <div class="flex flex-wrap gap-1.5">
+        {novel.genre.map((genre) => (
+          <MetadataPill label={genre} tone="genre" />
+        ))}
+        {novel.workType.map((workType) => (
+          <MetadataPill label={workType} tone="workType" />
+        ))}
+      </div>
+    )}
+
     <div class="mt-auto">
       <StatusBadge status={novel.status} />
     </div>

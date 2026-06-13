@@ -6,7 +6,7 @@ This module provides all Cloudflare R2 data-access functions for the novel viewe
 
 ### Types
 
-- **`NovelMeta`** — Raw `meta.json` fields (title, author, description, status, genre, tags, language, publishedAt, updatedAt)
+- **`NovelMeta`** — Raw `meta.json` fields normalized for app use (title, author, description, status, genre, tags, workType, language, publishedAt, updatedAt)
 - **`NovelSummary`** — `NovelMeta` + `slug` + `coverArtKey` (used in list views)
 - **`Novel`** — `NovelSummary` + `chapters[]` array (used on detail/reader pages)
 - **`ChapterData`** — Rendered HTML, title, chapterNumber, prev/next navigation
